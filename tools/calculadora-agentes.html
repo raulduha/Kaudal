@@ -1,0 +1,230 @@
+<title>Calculadora de Agentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#0B0B12; --surface:#14141F; --surface2:#1C1C2B; --border:#2A2A3D;
+    --text:#F4F4FB; --muted:#A7A7C0; --faint:#6E6E8A;
+    --primary:#7C5CFF; --mint:#00E0B8; --warm:#FF7A45; --danger:#FF5C7A; --warn:#FFC24B;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:"Instrument Sans",system-ui,sans-serif;
+    background-image:radial-gradient(800px 500px at 90% -10%, rgba(124,92,255,.16), transparent 60%),radial-gradient(600px 400px at -5% 5%, rgba(0,224,184,.08), transparent 55%);
+    background-attachment:fixed; -webkit-font-smoothing:antialiased; line-height:1.55}
+  h1,h2,h3{font-family:"Sora",sans-serif; margin:0; letter-spacing:-.02em}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1080px; margin:0 auto; padding:28px}
+  header{display:flex; align-items:center; gap:12px; margin-bottom:6px}
+  .drop{width:26px;height:26px;border-radius:50% 50% 50% 3px;transform:rotate(45deg);background:linear-gradient(135deg,var(--primary),var(--mint));box-shadow:0 0 18px rgba(124,92,255,.6)}
+  h1{font-size:26px}
+  .sub{color:var(--muted); font-size:15px; margin:0 0 22px 38px}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:20px}
+  .card h2{font-size:15px; color:var(--muted); font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px}
+  .field{margin-bottom:14px}
+  .field label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+  .field .hint{font-size:11px; color:var(--faint); margin-top:4px}
+  input,select{width:100%; background:var(--bg); border:1px solid var(--border); border-radius:10px; color:var(--text);
+    padding:10px 12px; font-size:14px; font-family:inherit}
+  input:focus,select:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(124,92,255,.18)}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .out{position:sticky; top:20px}
+  .big{background:linear-gradient(160deg,#1C1C2B,#141420); border:1px solid var(--border); border-radius:var(--r); padding:20px; margin-bottom:14px}
+  .big .lab{font-size:12px; color:var(--faint); text-transform:uppercase; letter-spacing:.12em}
+  .big .num{font-family:"Sora",sans-serif; font-weight:800; font-size:34px; margin-top:6px; font-variant-numeric:tabular-nums}
+  .verdict{border-radius:var(--r); padding:14px 16px; font-weight:600; font-family:"Sora"; display:flex; align-items:center; gap:10px; font-size:15px; margin-bottom:14px}
+  .lines{display:flex; flex-direction:column; gap:0}
+  .line{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(42,42,61,.6); font-size:14px}
+  .line:last-child{border-bottom:none}
+  .line .k{color:var(--muted)} .line .v{font-family:"JetBrains Mono"; font-variant-numeric:tabular-nums}
+  .line.tot .k{color:var(--text); font-weight:600} .line.tot .v{color:var(--mint); font-weight:600}
+  .pill{display:inline-block; font-size:11px; font-family:"JetBrains Mono"; padding:3px 9px; border-radius:999px; border:1px solid var(--border); color:var(--faint); margin-left:auto}
+  .foot{color:var(--faint); font-size:12px; margin-top:22px; line-height:1.7}
+  .slider-row{display:flex; align-items:center; gap:12px}
+  .slider-row input[type=range]{flex:1; accent-color:var(--primary)}
+  .slider-row .val{font-family:"JetBrains Mono"; font-size:14px; min-width:44px; text-align:right}
+</style>
+
+<div class="wrap">
+  <header><span class="drop"></span><h1>Calculadora de economía por agente</h1></header>
+  <p class="sub">Pon cuánto se usa un agente al mes y mira al tiro cuánto te cuesta y cuánto cobrar. Kaudal · valores en CLP.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>⚙️ El agente</h2>
+        <div class="field">
+          <label>Nombre del agente</label>
+          <input id="nombre" type="text" value="Notas a mano → Excel">
+        </div>
+        <div class="field">
+          <label>¿Cuántas veces se usa al mes?</label>
+          <input id="usos" type="number" value="600" min="0">
+          <div class="hint">Cada factura/consulta/documento procesado cuenta como 1 uso.</div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Tokens entrada / uso</label>
+            <input id="tin" type="number" value="1500" min="0">
+          </div>
+          <div class="field">
+            <label>Tokens salida / uso</label>
+            <input id="tout" type="number" value="700" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label>Modelo (precio USD por 1M tokens — edítalo al valor vigente)</label>
+          <select id="modelo"></select>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>USD / 1M entrada</label>
+            <input id="pin" type="number" step="0.01" value="3">
+          </div>
+          <div class="field">
+            <label>USD / 1M salida</label>
+            <input id="pout" type="number" step="0.01" value="15">
+          </div>
+        </div>
+        <div class="field">
+          <label>Tipo de cambio (1 USD = ? CLP)</label>
+          <input id="fx" type="number" value="950" min="1">
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h2>💸 Costos y precio</h2>
+        <div class="field">
+          <label>Otros costos fijos del agente / mes (CLP)</label>
+          <input id="fijo" type="number" value="8000" min="0">
+          <div class="hint">Parte proporcional de hosting, base de datos, proveedor de boletas, etc.</div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Horas de soporte / mes</label>
+            <input id="hs" type="number" value="2" min="0">
+          </div>
+          <div class="field">
+            <label>Valor de tu hora (CLP)</label>
+            <input id="vh" type="number" value="15000" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label>Comisión pasarela (Flow, %)</label>
+          <input id="com" type="number" step="0.1" value="3.5" min="0">
+        </div>
+        <div class="field">
+          <label>Margen objetivo (multiplicador sobre costo)</label>
+          <div class="slider-row">
+            <input id="mult" type="range" min="1.5" max="6" step="0.5" value="3">
+            <span class="val" id="multval">3×</span>
+          </div>
+          <div class="hint">Precio sugerido = costo total × este múltiplo. 3× es un piso sano.</div>
+        </div>
+        <div class="field">
+          <label>Precio que quieres cobrar / mes (CLP) — opcional</label>
+          <input id="precio" type="number" value="" placeholder="déjalo vacío para usar el sugerido">
+        </div>
+      </div>
+    </div>
+
+    <div class="out">
+      <div id="verdict" class="verdict"></div>
+      <div class="big">
+        <div class="lab">Precio sugerido / mes</div>
+        <div class="num" id="sugerido" style="color:var(--primary)">—</div>
+        <div class="mono" style="font-size:12px;color:var(--faint);margin-top:6px" id="sugeridoUso"></div>
+      </div>
+      <div class="card">
+        <h2>🧾 Desglose mensual <span class="pill" id="usospill"></span></h2>
+        <div class="lines">
+          <div class="line"><span class="k">Costo de IA (modelo)</span><span class="v" id="cIA">—</span></div>
+          <div class="line"><span class="k">Otros costos fijos</span><span class="v" id="cFijo">—</span></div>
+          <div class="line"><span class="k">Soporte (tu tiempo)</span><span class="v" id="cSop">—</span></div>
+          <div class="line tot"><span class="k">Costo total / mes</span><span class="v" id="cTot">—</span></div>
+          <div class="line"><span class="k">Costo por uso</span><span class="v" id="cUso">—</span></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>📈 Si cobras el precio elegido</h2>
+        <div class="lines">
+          <div class="line"><span class="k">Precio usado / mes</span><span class="v" id="pUsado">—</span></div>
+          <div class="line"><span class="k">− Comisión pasarela</span><span class="v" id="pCom">—</span></div>
+          <div class="line"><span class="k">− Costo total</span><span class="v" id="pCosto">—</span></div>
+          <div class="line tot"><span class="k">Ganancia / mes</span><span class="v" id="pGan">—</span></div>
+          <div class="line"><span class="k">Margen</span><span class="v" id="pMargen">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">Los precios de los modelos cambian: edita los campos USD/1M al valor vigente de tu proveedor. Esta calculadora es una guía de decisión, no una cotización oficial. Los valores no consideran IVA (agrégalo al cobrar). Está pensada para vivir dentro de Kaudal como una pantalla — ver <span class="mono">docs/15-mvp-operador.md</span>.</p>
+</div>
+
+<script>
+(function(){
+  var modelos=[
+    {n:"Claude Haiku (rápido/barato)",i:0.80,o:4},
+    {n:"Claude Sonnet (equilibrado)",i:3,o:15},
+    {n:"Claude Opus (potente)",i:15,o:75},
+    {n:"GPT-4o mini",i:0.15,o:0.60},
+    {n:"GPT-4o",i:2.5,o:10},
+    {n:"Personalizado",i:null,o:null}
+  ];
+  var sel=document.getElementById('modelo');
+  modelos.forEach(function(m,idx){var o=document.createElement('option');o.value=idx;o.textContent=m.n;sel.appendChild(o);});
+  sel.value="1";
+  function fmt(n){ if(!isFinite(n)) n=0; return "$"+Math.round(n).toLocaleString('es-CL'); }
+  function fmt2(n){ if(!isFinite(n)) n=0; return "$"+(Math.round(n*100)/100).toLocaleString('es-CL',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  var ids=['nombre','usos','tin','tout','pin','pout','fx','fijo','hs','vh','com','mult','precio'];
+  function g(id){return parseFloat(document.getElementById(id).value)||0;}
+  sel.addEventListener('change',function(){
+    var m=modelos[sel.value];
+    if(m.i!==null){document.getElementById('pin').value=m.i;document.getElementById('pout').value=m.o;}
+    calc();
+  });
+  document.getElementById('mult').addEventListener('input',function(){document.getElementById('multval').textContent=this.value+"×";});
+  function calc(){
+    var usos=g('usos'), tin=g('tin'), tout=g('tout'), pin=g('pin'), pout=g('pout'), fx=g('fx');
+    var fijo=g('fijo'), hs=g('hs'), vh=g('vh'), com=g('com'), mult=g('mult');
+    // costo IA mensual en CLP
+    var costoIAusd = usos*( (tin/1e6)*pin + (tout/1e6)*pout );
+    var costoIA = costoIAusd*fx;
+    var costoSop = hs*vh;
+    var costoTot = costoIA + fijo + costoSop;
+    var costoUso = usos>0 ? costoTot/usos : 0;
+    var sugerido = costoTot*mult;
+    // precio elegido
+    var precioInput = document.getElementById('precio').value;
+    var precio = precioInput===''? sugerido : (parseFloat(precioInput)||0);
+    var comMonto = precio*(com/100);
+    var ganancia = precio - comMonto - costoTot;
+    var margen = precio>0 ? (ganancia/precio*100) : 0;
+    // render
+    document.getElementById('cIA').textContent=fmt(costoIA);
+    document.getElementById('cFijo').textContent=fmt(fijo);
+    document.getElementById('cSop').textContent=fmt(costoSop);
+    document.getElementById('cTot').textContent=fmt(costoTot);
+    document.getElementById('cUso').textContent=fmt2(costoUso)+" / uso";
+    document.getElementById('sugerido').textContent=fmt(sugerido);
+    document.getElementById('sugeridoUso').textContent="≈ "+fmt2(usos>0?sugerido/usos:0)+" por uso  ·  múltiplo "+mult+"× sobre costo";
+    document.getElementById('usospill').textContent=usos.toLocaleString('es-CL')+" usos/mes";
+    document.getElementById('pUsado').textContent=fmt(precio);
+    document.getElementById('pCom').textContent="− "+fmt(comMonto);
+    document.getElementById('pCosto').textContent="− "+fmt(costoTot);
+    document.getElementById('pGan').textContent=fmt(ganancia);
+    document.getElementById('pMargen').textContent=Math.round(margen)+"%";
+    // verdict
+    var v=document.getElementById('verdict');
+    if(precio<=0){ v.style.background="rgba(110,110,138,.12)"; v.style.color="var(--faint)"; v.innerHTML="Ingresa un precio o usa el sugerido"; }
+    else if(margen>=55){ v.style.background="rgba(0,224,184,.12)"; v.style.color="var(--mint)"; v.innerHTML="✅ Buen negocio · margen "+Math.round(margen)+"%"; }
+    else if(margen>=30){ v.style.background="rgba(255,194,75,.12)"; v.style.color="var(--warn)"; v.innerHTML="⚠️ Ajustado · margen "+Math.round(margen)+"% — sube precio o baja costo"; }
+    else { v.style.background="rgba(255,92,122,.12)"; v.style.color="var(--danger)"; v.innerHTML="⛔ No conviene aún · margen "+Math.round(margen)+"%"; }
+  }
+  ids.forEach(function(id){document.getElementById(id).addEventListener('input',calc);});
+  calc();
+})();
+</script>

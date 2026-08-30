@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "nuevo-agente",
+  "nombre": "Nombre del Agente",
+  "categoria": "atencion | ventas | cobranza | documentos | marketing | agenda",
+  "madurez": "probado | piloto | roadmap",
+  "descripcion": "Una frase de qué hace y para quién.",
+  "idioma": "es-CL",
+  "tono": "cercano, claro, breve",
+  "modelo": "claude",
+  "instrucciones": "Qué hace, qué NO hace, y la regla de oro: si dudas, deriva a humano. No inventar datos.",
+  "herramientas": [],
+  "umbralConfianza": 0.7,
+  "memoria": { "conversacion": true, "cliente": true },
+  "evals": [
+    { "caso": "descripcion del caso", "esperado": "comportamiento esperado" }
+  ],
+  "guardarrailes": ["no inventar datos", "si dudas, derivar", "respetar org_id"],
+  "auditoria": true
+}

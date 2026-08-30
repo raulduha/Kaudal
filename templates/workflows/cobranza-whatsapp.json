@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "cobranza-whatsapp",
+  "nombre": "Secuencia de Cobranza por WhatsApp",
+  "descripcion": "Detecta cuentas por cobrar, envía recordatorios amables y registra respuestas y promesas de pago.",
+  "nodos": [
+    { "id": "n1", "tipo": "disparador", "canal": "programado", "cron": "0 10 * * 1-5", "titulo": "Revisar vencimientos (L-V 10:00)" },
+    { "id": "n2", "tipo": "herramienta", "tool": "consultar_estado_cuenta", "titulo": "Buscar deudas vencidas" },
+    { "id": "n3", "tipo": "agente", "agente": "cobranza", "titulo": "Redactar recordatorio amable" },
+    { "id": "n4", "tipo": "accion", "accion": "enviar_whatsapp", "titulo": "Enviar recordatorio + link de pago" },
+    { "id": "n5", "tipo": "condicion", "expresion": "respuesta == 'reclamo'", "titulo": "¿Reclama o disputa?" },
+    { "id": "n6", "tipo": "revision_humana", "cola": "cobranza", "titulo": "Derivar a humano" },
+    { "id": "n7", "tipo": "accion", "accion": "registrar_gestion", "titulo": "Registrar gestión y auditar" }
+  ],
+  "conexiones": [
+    { "de": "n1", "a": "n2" },
+    { "de": "n2", "a": "n3" },
+    { "de": "n3", "a": "n4" },
+    { "de": "n4", "a": "n5" },
+    { "de": "n5", "a": "n6", "cuando": "verdadero" },
+    { "de": "n5", "a": "n7", "cuando": "falso" },
+    { "de": "n6", "a": "n7" }
+  ]
+}

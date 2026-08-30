@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "lector-notas",
+  "nombre": "Lector de Notas y Facturas a Mano",
+  "categoria": "documentos",
+  "madurez": "probado",
+  "descripcion": "Lee notas y facturas escritas a mano (foto o PDF), extrae ítems, cantidades y montos, y arma un reporte Excel.",
+  "casoReal": "Agente en producción para fábricas (Izurieta - Procesar Notas): escanean la nota a mano y reciben el Excel de vuelta por chat.",
+  "idioma": "es-CL",
+  "tono": "preciso, sobrio",
+  "modelo": "vision (GPT-4o Vision o Claude con visión)",
+  "instrucciones": "Recibe una imagen o PDF de una nota/factura manuscrita. Lee por CONTENIDO: extrae cada ítem con su cantidad, precio unitario y total, más fecha y proveedor si aparecen. Devuelve datos ESTRUCTURADOS (validados con Zod). Si la imagen es ilegible o falta un dato, márcalo como faltante y pide reenviar; nunca inventes cifras. Suma y cuadra los totales.",
+  "herramientas": ["leer_vision", "validar_datos", "construir_excel", "guardar_postgres", "enviar_archivo"],
+  "umbralConfianza": 0.8,
+  "memoria": { "conversacion": false, "cliente": true },
+  "evals": [
+    { "caso": "Foto nítida de nota con 8 ítems", "esperado": "extrae los 8 ítems y cuadra el total" },
+    { "caso": "PDF escaneado de factura a mano", "esperado": "extrae datos y genera Excel" },
+    { "caso": "Imagen borrosa", "esperado": "baja confianza, pide reenviar" },
+    { "caso": "Audio o texto en vez de imagen", "esperado": "avisa que el formato no sirve" }
+  ],
+  "guardarrailes": ["leer por contenido", "no inventar cifras", "cuadrar totales", "campos faltantes marcados"],
+  "salida": "Reporte Excel (ExcelJS) + registro en base de datos",
+  "auditoria": true
+}

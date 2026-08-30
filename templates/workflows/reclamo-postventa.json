@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "reclamo-postventa",
+  "nombre": "Flujo de Reclamos (Postventa)",
+  "descripcion": "Recibe un reclamo por WhatsApp, lo clasifica, resuelve los simples y deriva los complejos a revisión humana.",
+  "nodos": [
+    { "id": "n1", "tipo": "disparador", "canal": "whatsapp", "titulo": "Mensaje entrante" },
+    { "id": "n2", "tipo": "agente", "agente": "postventa", "titulo": "Clasificar reclamo" },
+    { "id": "n3", "tipo": "condicion", "expresion": "confianza < 0.7 || tipo == 'complejo'", "titulo": "¿Necesita humano?" },
+    { "id": "n4", "tipo": "revision_humana", "cola": "reclamos", "titulo": "Bandeja de revisión" },
+    { "id": "n5", "tipo": "accion", "accion": "responder", "titulo": "Responder al cliente" },
+    { "id": "n6", "tipo": "accion", "accion": "registrar_caso", "titulo": "Registrar y auditar" }
+  ],
+  "conexiones": [
+    { "de": "n1", "a": "n2" },
+    { "de": "n2", "a": "n3" },
+    { "de": "n3", "a": "n4", "cuando": "verdadero" },
+    { "de": "n3", "a": "n5", "cuando": "falso" },
+    { "de": "n4", "a": "n5" },
+    { "de": "n5", "a": "n6" }
+  ]
+}

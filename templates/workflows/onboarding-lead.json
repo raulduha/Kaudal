@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "onboarding-lead",
+  "nombre": "Captura y Calificación de Leads",
+  "descripcion": "Un lead llega por web/WhatsApp; el agente de ventas lo califica y agenda o deja seguimiento.",
+  "nodos": [
+    { "id": "n1", "tipo": "disparador", "canal": "web", "titulo": "Nuevo lead (formulario/chat)" },
+    { "id": "n2", "tipo": "agente", "agente": "ventas-sdr", "titulo": "Calificar lead" },
+    { "id": "n3", "tipo": "herramienta", "tool": "crear_lead", "titulo": "Crear en CRM" },
+    { "id": "n4", "tipo": "condicion", "expresion": "calificado == true", "titulo": "¿Califica?" },
+    { "id": "n5", "tipo": "accion", "accion": "agendar_reunion", "titulo": "Agendar demo" },
+    { "id": "n6", "tipo": "accion", "accion": "programar_seguimiento", "titulo": "Dejar seguimiento" }
+  ],
+  "conexiones": [
+    { "de": "n1", "a": "n2" },
+    { "de": "n2", "a": "n3" },
+    { "de": "n3", "a": "n4" },
+    { "de": "n4", "a": "n5", "cuando": "verdadero" },
+    { "de": "n4", "a": "n6", "cuando": "falso" }
+  ]
+}

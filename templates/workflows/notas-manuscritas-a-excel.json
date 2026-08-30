@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "slug": "notas-manuscritas-a-excel",
+  "nombre": "Notas manuscritas → Excel",
+  "descripcion": "Una fábrica escanea sus notas/facturas hechas a mano (foto o PDF) y las manda por chat. El agente las lee con visión IA, valida los datos, arma un reporte Excel y lo devuelve — además de guardar todo en base de datos.",
+  "casoReal": "Basado en un agente en producción (Izurieta - Procesar Notas). Fábricas con facturas a mano, escaneadas a PDF/foto, convertidas a reporte Excel automáticamente.",
+  "canalEntrada": ["telegram", "whatsapp"],
+  "nodos": [
+    { "id": "n1", "tipo": "disparador", "canal": "telegram", "titulo": "Recibe foto o PDF de la nota" },
+    { "id": "n2", "tipo": "condicion", "expresion": "tipo == 'foto' || tipo == 'pdf'", "titulo": "¿Formato válido? (foto/PDF)" },
+    { "id": "n3", "tipo": "agente", "agente": "lector-notas", "titulo": "Lee la nota con visión IA (GPT-4o Vision / Claude)" },
+    { "id": "n4", "tipo": "herramienta", "tool": "validar_datos", "titulo": "Valida ítems, cantidades y montos" },
+    { "id": "n5", "tipo": "herramienta", "tool": "guardar_postgres", "titulo": "Guarda el registro en base de datos" },
+    { "id": "n6", "tipo": "accion", "accion": "construir_excel", "titulo": "Arma el reporte Excel" },
+    { "id": "n7", "tipo": "accion", "accion": "enviar_archivo", "titulo": "Devuelve el Excel al usuario" },
+    { "id": "n8", "tipo": "accion", "accion": "avisar_formato", "titulo": "Avisa que el formato no sirve" }
+  ],
+  "conexiones": [
+    { "de": "n1", "a": "n2" },
+    { "de": "n2", "a": "n3", "cuando": "verdadero" },
+    { "de": "n2", "a": "n8", "cuando": "falso" },
+    { "de": "n3", "a": "n4" },
+    { "de": "n4", "a": "n5" },
+    { "de": "n5", "a": "n6" },
+    { "de": "n6", "a": "n7" }
+  ],
+  "notaTecnica": "Migrable desde n8n a Kaudal/Mastra: el trigger de Telegram pasa a canal; los nodos httpRequest a GPT-4o pasan a un Agente con tool de visión; el code de Excel pasa a una tool construir_excel (ExcelJS); Postgres se mantiene."
+}

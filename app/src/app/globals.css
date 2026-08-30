@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estos --custom-props duplican los tokens de brand/brand.config.ts para el CSS
+   a mano que ya existía (page.tsx). Los componentes nuevos usan las clases
+   Tailwind (bg-bg, text-primary, etc.) generadas desde ese mismo config. */
+:root{
+  --bg:#0B0B12; --surface:#14141F; --surface2:#1C1C2B; --border:#2A2A3D;
+  --text:#F4F4FB; --muted:#A7A7C0; --faint:#6E6E8A;
+  --primary:#7C5CFF; --mint:#00E0B8; --warm:#FF7A45;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:var(--font-geist-sans),"Geist","Inter",system-ui,-apple-system,sans-serif; line-height:1.55;
+  background-image:radial-gradient(800px 500px at 90% -10%, rgba(124,92,255,.16), transparent 60%),
+    radial-gradient(600px 400px at -5% 5%, rgba(0,224,184,.08), transparent 55%);
+  background-attachment:fixed; min-height:100vh;
+}
+a{color:inherit}
+/* Todo lo de acá abajo es CSS a mano de la página de prueba original (page.tsx),
+   scopeado a .wrap para que no choque con los componentes nuevos de src/components/ui. */
+.wrap{max-width:820px;margin:0 auto;padding:40px 24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.02em}
+.drop{width:22px;height:22px;border-radius:50% 50% 50% 3px;transform:rotate(45deg);
+  background:linear-gradient(135deg,var(--primary),var(--mint));box-shadow:0 0 18px rgba(124,92,255,.6)}
+.wrap .sub{color:var(--muted);margin:6px 0 26px 32px}
+.wrap .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.wrap .badge{display:inline-block;font-size:11px;font-family:monospace;padding:3px 9px;border-radius:999px;border:1px solid var(--border);color:var(--mint)}
+.wrap label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+.wrap textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);
+  padding:12px;font:inherit;resize:vertical;min-height:80px}
+.wrap textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,92,255,.18)}
+.wrap button{margin-top:12px;background:linear-gradient(135deg,var(--primary),#6A4AF0);color:#fff;border:none;
+  border-radius:10px;padding:11px 18px;font-weight:600;font-size:14px;cursor:pointer}
+.wrap button:disabled{opacity:.6;cursor:default}
+.wrap .resp{white-space:pre-wrap;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:14px;color:var(--text)}
+.wrap .meta{font-family:monospace;font-size:12px;color:var(--faint);margin-top:8px}
