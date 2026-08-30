@@ -23,8 +23,6 @@ function rutaInternaSegura(valor: string | null): string {
 function FormularioLogin() {
   const router = useRouter();
   const params = useSearchParams();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | undefined>();
   const [enviando, setEnviando] = useState(false);
 
@@ -32,6 +30,11 @@ function FormularioLogin() {
     e.preventDefault();
     setError(undefined);
     setEnviando(true);
+    // Los gestores de contraseñas pueden completar el DOM sin disparar
+    // onChange de React. FormData garantiza que Enter envíe lo que se ve.
+    const form = new FormData(e.currentTarget as HTMLFormElement);
+    const email = String(form.get("email") ?? "").trim().toLowerCase();
+    const password = String(form.get("password") ?? "");
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -68,19 +71,17 @@ function FormularioLogin() {
           <Input
             label="Correo"
             type="email"
-            autoComplete="email"
+            name="email"
+            autoComplete="username"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             error={error ? " " : undefined}
           />
           <Input
             label="Contraseña"
             type="password"
+            name="password"
             autoComplete="current-password"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             error={error}
           />
           <Button type="submit" className="w-full" disabled={enviando}>
