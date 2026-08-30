@@ -25,7 +25,8 @@
 
 - El formulario de instancia tiene etiquetas, mensajes de estado y controles de al menos 44 px para su acción principal.
 - La navegación base conserva skip link y focos visibles.
-- Pendiente antes de producción: recorrido con teclado, lector de pantalla y zoom al 200 % en las pantallas nuevas de Instancias y Portal.
+- Verificación manual local: Login carga con título, etiquetas y controles semánticos; el foco por teclado avanza en orden Correo → Contraseña → Entrar. A 320 px no presenta desborde horizontal.
+- Pendiente antes de producción: recorrido autenticado completo, lector de pantalla y zoom al 200 % en las pantallas nuevas de Instancias y Portal.
 
 ## Bloqueadores de producción
 
