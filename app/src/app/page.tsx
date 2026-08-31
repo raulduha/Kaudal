@@ -6,6 +6,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/ui/StatCard";
 import { AgenteEstadoChip, EstadoAgente } from "@/components/ui/AgenteEstadoChip";
+import { InfoNote } from "@/components/ui/InfoNote";
 import { CerrarSesionBoton } from "./portal/CerrarSesionBoton";
 
 const estadoLegible: Record<string, string> = { activo: "En línea", pausado: "Pausado", caido: "Con problema" };
@@ -28,6 +29,8 @@ export default async function DashboardPage() {
       <div aria-hidden="true" className="absolute -bottom-32 right-20 h-56 w-56 rounded-full bg-secondary/10 blur-3xl" />
       <div className="relative max-w-2xl"><p className="text-sm font-medium text-secondary">Centro de operación</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-text sm:text-4xl">Todo tu negocio de agentes, claro y bajo control.</h1><p className="mt-3 max-w-xl text-text-muted">Registra agentes, acompaña a tus clientes y mantén el cobro cubierto antes de desplegar.</p><div className="mt-6 flex flex-wrap gap-3"><Link href="/agentes/nuevo"><Button>Registrar agente</Button></Link><Link href="/clientes/nuevo"><Button variant="secondary">Inscribir cliente</Button></Link><CerrarSesionBoton /></div></div>
     </section>
+
+    <InfoNote className="mt-5">Cómo se conecta todo: primero inscribes al cliente, luego registras el agente que ya funciona. Kaudal mide su uso y centraliza soporte. Los cobros e instancias se prueban hoy en sandbox; no se mueve dinero ni se despliega infraestructura real sin conectar Flow, DTE y Railway.</InfoNote>
 
     <section aria-label="Resumen del negocio" className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Clientes activos" value={clientes ?? 0} hint="empresas acompañadas" /><StatCard label="Agentes registrados" value={agentes ?? 0} variant="secondary" hint="en tu operación" /><StatCard label="Tickets por resolver" value={ticketsAbiertos ?? 0} variant="accent-warm" hint="requieren atención" /><StatCard label="Estado de plataforma" value="En línea" variant="secondary" hint="entorno local conectado" /></section>
 

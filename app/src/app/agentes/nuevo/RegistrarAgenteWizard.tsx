@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Input, Select, Textarea, InfoNote, StatusChip } from "@/components/ui";
+import { Button, Input, Select, Textarea, InfoNote, InfoAyuda, StatusChip } from "@/components/ui";
 import { cn } from "@/lib/cn";
 
 interface Cliente {
@@ -194,7 +194,7 @@ export function RegistrarAgenteWizard({ clientes }: { clientes: Cliente[] }) {
 
   return (
     <div className="mx-auto max-w-2xl py-6">
-      <h1 className="text-2xl font-bold text-text">Registrar agente</h1>
+      <h1 className="text-2xl font-bold text-text">Registrar agente <InfoAyuda titulo="Qué significa registrar un agente">Kaudal no crea ni ejecuta este agente. Registra el que ya tienes corriendo —por ejemplo en n8n, Mastra o código propio— para mostrarlo al cliente, medir su uso y operarlo desde un solo lugar.</InfoAyuda></h1>
       <p className="mt-1 text-text-muted">
         Kaudal no lo ejecuta: lo apunta por endpoint y lo convierte en servicio medible.
       </p>

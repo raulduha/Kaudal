@@ -5,6 +5,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { calcularRentabilidadInstancia } from "@/lib/instancias/suspension";
 import { RegistrarInstanciaForm } from "@/components/instancias/RegistrarInstanciaForm";
+import { InfoAyuda } from "@/components/ui/InfoAyuda";
 
 export default async function InstanciasPage() {
   const usuario = await obtenerUsuarioActual();
@@ -19,7 +20,7 @@ export default async function InstanciasPage() {
   const planes = new Map((suscripciones ?? []).map((s) => [s.id, s]));
 
   return <AppShell rol="operador" activeId="instancias" nombrePerfil={usuario.nombre ?? usuario.email}>
-    <h1 className="text-2xl font-bold text-text">Instancias</h1>
+    <h1 className="text-2xl font-bold text-text">Instancias <InfoAyuda titulo="Cuándo usar una instancia">Una instancia es el servidor donde vive un agente. En sandbox la registras manualmente; Kaudal no permite activarla si la suscripción no cubre el costo. Railway automático requiere sus credenciales de producción.</InfoAyuda></h1>
     <p className="mt-1 text-text-muted">Servicios desplegados por cliente y su cobertura mensual.</p>
     <RegistrarInstanciaForm clientes={clientes ?? []} suscripciones={suscripciones ?? []} />
     <div className="mt-6 space-y-3">{(instancias ?? []).map((i) => {

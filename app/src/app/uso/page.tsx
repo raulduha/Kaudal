@@ -4,6 +4,7 @@ import { crearClienteServidor } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/AppShell";
 import { StatCard } from "@/components/ui/StatCard";
 import { UsoPorDia } from "@/components/portal/UsoPorDia";
+import { InfoAyuda } from "@/components/ui/InfoAyuda";
 
 const formatoClp = new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 });
 
@@ -35,7 +36,7 @@ export default async function UsoOperadorPage() {
   const ranking = [...porAgente.entries()].sort(([, a], [, b]) => b.costo - a.costo);
 
   return <AppShell rol="operador" activeId="uso" nombrePerfil={usuario.nombre ?? usuario.email}>
-    <h1 className="text-2xl font-bold text-text">Uso y costo</h1>
+    <h1 className="text-2xl font-bold text-text">Uso y costo <InfoAyuda titulo="Qué representa este costo">Es una estimación del consumo del modelo, útil para entender el uso. No es el cobro que Kaudal hace al cliente ni descuenta dinero de ninguna cuenta.</InfoAyuda></h1>
     <p className="mt-1 text-text-muted">Una vista clara del uso estimado de todos tus agentes este mes.</p>
     <div className="mt-6 grid gap-4 sm:grid-cols-3"><StatCard label="Usos este mes" value={totalUsos.toLocaleString("es-CL")} /><StatCard label="Costo estimado" value={`≈ ${formatoClp.format(totalCosto)}`} variant="secondary" hint="informativo, no facturado" /><StatCard label="Agentes con uso" value={porAgente.size} variant="accent-warm" /></div>
     <section className="mt-8"><h2 className="text-lg font-semibold text-text">Uso por día</h2><UsoPorDia porDia={Object.fromEntries(porDia)} /></section>

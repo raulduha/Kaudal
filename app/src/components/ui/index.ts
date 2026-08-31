@@ -11,3 +11,4 @@ export * from "./ClientCard";
 export * from "./ClientStatusChip";
 export * from "./TicketCard";
 export * from "./InfoNote";
+export * from "./InfoAyuda";
