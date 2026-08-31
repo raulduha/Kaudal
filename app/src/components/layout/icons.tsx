@@ -100,3 +100,7 @@ export function SettingsIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function BookIcon(props: IconProps) {
+  return <Icon {...props}><path d="M4 3.5h9.5A2.5 2.5 0 0 1 16 6v10.5H6A2 2 0 0 0 4 18V3.5Z" /><path d="M4 16.5h9.5A2.5 2.5 0 0 1 16 19" /><path d="M7 7h6M7 10h5" /></Icon>;
+}

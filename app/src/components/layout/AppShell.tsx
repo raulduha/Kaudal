@@ -6,7 +6,7 @@ import { Rol } from "@/components/ui/Badge";
 import { EstadoConexion } from "@/components/ui/ConnectionBadge";
 import { Sidebar, NavItem } from "./Sidebar";
 import { Topbar } from "./Topbar";
-import { HomeIcon, UsersIcon, BotIcon, ChartIcon, CreditCardIcon, ChatIcon, SettingsIcon, CalculatorIcon } from "./icons";
+import { HomeIcon, UsersIcon, BotIcon, ChartIcon, CreditCardIcon, ChatIcon, SettingsIcon, CalculatorIcon, BookIcon } from "./icons";
 
 // Navegación del operador — docs/eng/05-frontend-operador.md §3.
 const NAV_OPERADOR: Omit<NavItem, "badgeCount">[] = [
@@ -20,6 +20,7 @@ const NAV_OPERADOR: Omit<NavItem, "badgeCount">[] = [
   { id: "cobros", label: "Cobros", href: "/cobros", icon: CreditCardIcon },
   { id: "instancias", label: "Instancias", href: "/instancias", icon: BotIcon },
   { id: "reclamos", label: "Reclamos", href: "/reclamos", icon: ChatIcon },
+  { id: "docs", label: "Docs", href: "/docs", icon: BookIcon },
   { id: "ajustes", label: "Ajustes", href: "/ajustes", icon: SettingsIcon },
 ];
 
