@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Input, Select, Badge } from "@/components/ui";
+import { Input, Select, Badge, InfoAyuda } from "@/components/ui";
 
 interface Tarifa {
   modelo: string;
@@ -47,6 +47,10 @@ const fmt2 = (n: number) =>
   Number.isFinite(n)
     ? "$" + (Math.round(n * 100) / 100).toLocaleString("es-CL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     : "$0,00";
+
+function EtiquetaAyuda({ etiqueta, ayuda }: { etiqueta: string; ayuda: string }) {
+  return <>{etiqueta}<InfoAyuda titulo={`Ayuda: ${etiqueta}`}>{ayuda}</InfoAyuda></>;
+}
 
 /**
  * Puerto a React de tools/calculadora-agentes.html (tarea 7.2). Misma
@@ -125,9 +129,9 @@ export function CalculadoraAgentes({ tarifas }: { tarifas: Tarifa[] }) {
           <div className="rounded-xl border border-border bg-surface p-5">
             <h2 className="mb-4 text-sm font-semibold text-text-muted">El agente</h2>
             <div className="space-y-4">
-              <Input label="Nombre del agente" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+              <Input label={<EtiquetaAyuda etiqueta="Nombre del agente" ayuda="Solo identifica esta simulación; no cambia el agente real." />} value={nombre} onChange={(e) => setNombre(e.target.value)} />
               <Input
-                label="¿Cuántas veces se usa al mes?"
+                label={<EtiquetaAyuda etiqueta="¿Cuántas veces se usa al mes?" ayuda="Conversaciones, documentos o tareas que el agente procesa en un mes. Sirve para estimar el costo mensual." />}
                 type="number"
                 min={0}
                 value={usos}
@@ -135,21 +139,21 @@ export function CalculadoraAgentes({ tarifas }: { tarifas: Tarifa[] }) {
                 helperText="Cada factura/consulta/documento procesado cuenta como 1 uso."
               />
               <div className="grid grid-cols-2 gap-3">
-                <Input label="Tokens entrada / uso" type="number" min={0} value={tin} onChange={(e) => setTin(Number(e.target.value) || 0)} />
-                <Input label="Tokens salida / uso" type="number" min={0} value={tout} onChange={(e) => setTout(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="Tokens entrada / uso" ayuda="Texto que recibe el modelo en cada uso: instrucciones, mensajes y contexto. Revísalo en los logs del proveedor de IA." />} type="number" min={0} value={tin} onChange={(e) => setTin(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="Tokens salida / uso" ayuda="Texto que genera el modelo en cada uso: respuesta, resumen o documento. También aparece en los logs del proveedor." />} type="number" min={0} value={tout} onChange={(e) => setTout(Number(e.target.value) || 0)} />
               </div>
               <Select
-                label="Modelo"
+                label={<EtiquetaAyuda etiqueta="Modelo" ayuda="Proveedor y modelo de IA del agente. Al elegirlo se cargan precios de referencia, que puedes ajustar para simular." />}
                 options={tarifas.map((t) => ({ value: t.modelo, label: `${t.modelo} (${NOMBRE_PROVEEDOR[t.proveedor] ?? t.proveedor})` }))}
                 value={modelo}
                 onChange={(e) => elegirModelo(e.target.value)}
                 helperText="Elige uno para prellenar el precio vigente — igual lo puedes editar."
               />
               <div className="grid grid-cols-2 gap-3">
-                <Input label="USD / 1M entrada" type="number" step="0.01" value={pin} onChange={(e) => setPin(Number(e.target.value) || 0)} />
-                <Input label="USD / 1M salida" type="number" step="0.01" value={pout} onChange={(e) => setPout(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="USD / 1M entrada" ayuda="Precio del proveedor por un millón de tokens que el modelo recibe. La calculadora lo trae desde tarifas y puedes corregirlo." />} type="number" step="0.01" value={pin} onChange={(e) => setPin(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="USD / 1M salida" ayuda="Precio del proveedor por un millón de tokens que el modelo genera. Suele costar más que la entrada." />} type="number" step="0.01" value={pout} onChange={(e) => setPout(Number(e.target.value) || 0)} />
               </div>
-              <Input label="Tipo de cambio (1 USD = ? CLP)" type="number" min={1} value={fx} onChange={(e) => setFx(Number(e.target.value) || 0)} />
+              <Input label={<EtiquetaAyuda etiqueta="Tipo de cambio (1 USD = ? CLP)" ayuda="Conversión para pasar el costo de IA de dólares a pesos chilenos. Actualízala al cotizar un plan." />} type="number" min={1} value={fx} onChange={(e) => setFx(Number(e.target.value) || 0)} />
             </div>
           </div>
 
@@ -157,7 +161,7 @@ export function CalculadoraAgentes({ tarifas }: { tarifas: Tarifa[] }) {
             <h2 className="mb-4 text-sm font-semibold text-text-muted">Costos y precio</h2>
             <div className="space-y-4">
               <Input
-                label="Otros costos fijos del agente / mes (CLP)"
+                label={<EtiquetaAyuda etiqueta="Otros costos fijos del agente / mes (CLP)" ayuda="Lo que tú pagas cada mes para mantener este agente: Railway/VPS, base de datos, WhatsApp, DTE u otros servicios." />}
                 type="number"
                 min={0}
                 value={fijo}
@@ -165,13 +169,13 @@ export function CalculadoraAgentes({ tarifas }: { tarifas: Tarifa[] }) {
                 helperText="Parte proporcional de hosting, base de datos, proveedor de boletas, etc."
               />
               <div className="grid grid-cols-2 gap-3">
-                <Input label="Horas de soporte / mes" type="number" min={0} value={hs} onChange={(e) => setHs(Number(e.target.value) || 0)} />
-                <Input label="Valor de tu hora (CLP)" type="number" min={0} value={vh} onChange={(e) => setVh(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="Horas de soporte / mes" ayuda="Tiempo promedio mensual que gastarás atendiendo, ajustando o revisando el agente de este cliente." />} type="number" min={0} value={hs} onChange={(e) => setHs(Number(e.target.value) || 0)} />
+                <Input label={<EtiquetaAyuda etiqueta="Valor de tu hora (CLP)" ayuda="Lo que vale una hora de tu trabajo. Se suma como costo para que el precio no deje fuera tu tiempo." />} type="number" min={0} value={vh} onChange={(e) => setVh(Number(e.target.value) || 0)} />
               </div>
-              <Input label="Comisión pasarela (Flow, %)" type="number" step="0.1" min={0} value={com} onChange={(e) => setCom(Number(e.target.value) || 0)} />
+              <Input label={<EtiquetaAyuda etiqueta="Comisión pasarela (Flow, %)" ayuda="Porcentaje que Flow u otra pasarela descuenta de cada pago. Es un costo de cobro, no tu margen." />} type="number" step="0.1" min={0} value={com} onChange={(e) => setCom(Number(e.target.value) || 0)} />
               <div>
                 <label htmlFor="mult" className="mb-1.5 block text-sm text-text-muted">
-                  Margen objetivo (múltiplo sobre costo)
+                  <EtiquetaAyuda etiqueta="Margen objetivo (múltiplo sobre costo)" ayuda="Multiplica el costo total para proponer un precio. Por ejemplo, 3× cobra tres veces el costo, pero no implica que todo sea ganancia." />
                 </label>
                 <div className="flex items-center gap-3">
                   <input
@@ -190,7 +194,7 @@ export function CalculadoraAgentes({ tarifas }: { tarifas: Tarifa[] }) {
                 <p className="mt-1.5 text-xs text-text-muted">Precio sugerido = costo total × este múltiplo. 3× es un piso sano.</p>
               </div>
               <Input
-                label="Precio que quieres cobrar / mes (CLP)"
+                label={<EtiquetaAyuda etiqueta="Precio que quieres cobrar / mes (CLP)" ayuda="Monto mensual que paga el cliente por tu servicio. Si queda vacío se usa el sugerido. El IVA no está incluido." />}
                 type="number"
                 min={0}
                 placeholder="déjalo vacío para usar el sugerido"

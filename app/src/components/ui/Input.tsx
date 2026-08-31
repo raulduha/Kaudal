@@ -15,7 +15,7 @@ const fieldControlBase =
 
 interface FieldWrapperProps {
   id: string;
-  label?: string;
+  label?: ReactNode;
   helperText?: string;
   error?: string;
   required?: boolean;
@@ -54,7 +54,7 @@ function FieldWrapper({ id, label, helperText, error, required, children }: Fiel
 }
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: ReactNode;
   helperText?: string;
   error?: string;
 }
@@ -81,7 +81,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 });
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
+  label?: ReactNode;
   helperText?: string;
   error?: string;
 }
@@ -113,7 +113,7 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
+  label?: ReactNode;
   helperText?: string;
   error?: string;
   options: SelectOption[];
