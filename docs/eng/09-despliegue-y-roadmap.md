@@ -1,5 +1,7 @@
 # 09 · Despliegue, Testing y Roadmap
 
+> **Nota de vigencia (2026-08-31).** Este documento conserva la visión inicial Next.js + NestJS y compose. La aplicación implementada hoy es una sola app Next.js bajo `app/`, con Supabase Cloud como backend. Para desplegar el código actual y conectar Railway, Flow, DTE, cron, correo y el onboarding del cliente, seguir `15-runbook-produccion-railway-2026-08-31.md`. Ese runbook prevalece cuando haya contradicción.
+
 > **Alcance de este documento.** Cómo llevamos Kaudal desde tu notebook o una Raspberry Pi hasta producción en la nube, cómo lo probamos para que no se caiga ni filtre las API keys de los clientes, y qué construimos primero. El norte de todo este documento es un solo hito medible: **un cliente real inscrito, con su propia API key cargada y cifrada, viendo su uso, con un reclamo respondido y cobrado por Flow con boleta DTE emitida.**
 
 ---

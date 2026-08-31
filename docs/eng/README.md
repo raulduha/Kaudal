@@ -18,3 +18,7 @@ Generadas con un harness de 10 agentes. Modelo: operador + portal cliente con AP
 Ver tambien: `docs/18-definicion-producto.md` (decisiones cerradas) y `tools/calculadora-agentes.html`.
 | `10-auto-despliegue-y-costos.md` | Auto-despliegue Railway + no perder plata por instancia |
 | `11-conexion-n8n.md` | Cómo Kaudal recibe uso y monitorea tus n8n |
+| `12-go-no-go-sandbox.md` | Evidencia y límites del sandbox |
+| `13-reporte-go-no-go-2026-08-30.md` | Reporte de salida a producción |
+| `14-handoff-claude-code-2026-08-31.md` | Estado y relevo para Claude Code |
+| `15-runbook-produccion-railway-2026-08-31.md` | Runbook vigente: Railway, proveedores y onboarding cliente |

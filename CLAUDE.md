@@ -45,7 +45,7 @@ Todavía no hay `lint` ni `test` configurados en `app/package.json` (llegan en F
 - **`docs/eng/00..09`** son los specs de ingeniería autoritativos (modelo de datos, seguridad/API keys, backend, frontend operador, portal cliente, uso/cobros, reclamos, despliegue) — cada fase de `TASKS.md` apunta a uno o más de estos.
 - **`docs/00..18`** (raíz de `docs/`) son los docs de producto/negocio; `docs/18-definicion-producto.md` tiene las decisiones cerradas y `docs/15-mvp-operador.md` define el alcance del MVP actual (operador solo, multi-tenant es Fase 2).
 - **`.claude/agents/`** son los subagentes de Claude Code (listados abajo) que construyen Kaudal; **`system-agents/`** son specs de agentes que la plataforma misma operará más adelante (Fase 2) — no confundirlos.
-- Estado actual: fases 0–8, 9.1, 11.1 y gran parte de 11.5 están implementadas localmente. Lee primero `docs/eng/14-handoff-claude-code-2026-08-31.md`; luego usa `TASKS.md` para tomar la primera tarea pendiente.
+- Estado actual: fases 0–8, 9.1, 11.1 y gran parte de 11.5 están implementadas localmente. Lee primero `docs/eng/14-handoff-claude-code-2026-08-31.md` y el runbook vigente `docs/eng/15-runbook-produccion-railway-2026-08-31.md`; luego usa `TASKS.md` para tomar la primera tarea pendiente.
 
 ## Subagentes disponibles (`.claude/agents/`)
 Usa el subagente correcto según la tarea. No los reinventes:
