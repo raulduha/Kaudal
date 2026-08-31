@@ -1,26 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { obtenerUsuarioActual } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/AppShell";
-import { InfoNote } from "@/components/ui/InfoNote";
-
-const pasos = [
-  ["1", "Cliente", "Inscribe una empresa y crea su acceso. Cada cliente queda aislado."],
-  ["2", "Agente", "Registra un agente que ya corre en n8n, Mastra o código propio."],
-  ["3", "Uso", "El agente reporta actividad con su token de ingest; Kaudal estima el costo."],
-  ["4", "Servicio", "El cliente ve estado y soporte; cobro e instancia se prueban en sandbox."],
-] as const;
+import { DocsContent } from "./DocsContent";
 
 export default async function DocsPage() {
   const usuario = await obtenerUsuarioActual();
   if (!usuario || usuario.rol !== "operador") redirect("/login");
-  return <AppShell rol="operador" activeId="docs" nombrePerfil={usuario.nombre ?? usuario.email}>
-    <div className="mx-auto max-w-5xl"><div className="rounded-2xl border border-border bg-surface px-6 py-8 sm:px-8"><p className="text-sm font-medium text-secondary">Kaudal Docs</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-text">Entiende y opera tu servicio de agentes.</h1><p className="mt-3 max-w-2xl text-text-muted">Guía práctica para pasar de un agente que ya funciona a un servicio que puedes mostrar, medir y administrar.</p><nav aria-label="Secciones de documentación" className="mt-6 flex flex-wrap gap-2 text-sm"><a href="#flujo" className="rounded-full border border-border px-3 py-1.5 text-text-muted hover:border-primary hover:text-text">Flujo completo</a><a href="#agentes" className="rounded-full border border-border px-3 py-1.5 text-text-muted hover:border-primary hover:text-text">Registrar agente</a><a href="#sandbox" className="rounded-full border border-border px-3 py-1.5 text-text-muted hover:border-primary hover:text-text">Sandbox y pagos</a></nav></div>
-      <InfoNote className="mt-6">Kaudal no ejecuta ni cobra por sí solo hoy. El agente funciona en tu proveedor; Kaudal lo organiza y mide. Flow, DTE y Railway reales se conectan después, cuando decidas pasar a producción.</InfoNote>
-      <section id="flujo" className="mt-8 scroll-mt-6"><h2 className="text-xl font-semibold text-text">Flujo completo</h2><div className="mt-4 grid gap-4 sm:grid-cols-2">{pasos.map(([numero, titulo, texto]) => <article key={numero} className="rounded-xl border border-border bg-surface p-5"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary-text">{numero}</span><h3 className="mt-4 font-semibold text-text">{titulo}</h3><p className="mt-1 text-sm leading-6 text-text-muted">{texto}</p></article>)}</div></section>
-      <section id="agentes" className="mt-10 scroll-mt-6 rounded-xl border border-border bg-surface p-6"><h2 className="text-xl font-semibold text-text">Registrar un agente</h2><p className="mt-2 text-text-muted">Ejemplo: ya tienes un workflow n8n que recibe mensajes de WhatsApp. En Kaudal seleccionas el cliente, le pones un nombre claro y registras su endpoint. El workflow sigue viviendo en n8n; Kaudal no lo copia.</p><ol className="mt-5 list-decimal space-y-2 pl-5 text-sm leading-6 text-text-muted"><li>Ve a <Link className="font-medium text-primary-text hover:underline" href="/agentes/nuevo">Registrar agente</Link>.</li><li>Elige el cliente, nombre y descripción simple.</li><li>Pega el endpoint y usa “Probar conexión”.</li><li>Guarda el token de ingest si el agente reportará uso.</li></ol></section>
-      <section id="sandbox" className="mt-6 scroll-mt-6 rounded-xl border border-warning/30 bg-warning/10 p-6"><h2 className="text-xl font-semibold text-text">Sandbox: sin gastar dinero</h2><p className="mt-2 text-sm leading-6 text-text-muted">Puedes probar clientes, agentes, uso, tickets, cobros e instancias sin conectar proveedores pagados. Los cobros no mueven dinero y las instancias no llaman a Railway. El gating sí se prueba: una instancia no puede activarse si su suscripción no cubre el costo.</p><p className="mt-4 text-sm font-medium text-text">Para producción necesitarás Flow, DTE, Railway y sus credenciales reales.</p></section>
-      <section className="mt-10"><h2 className="text-xl font-semibold text-text">Más detalle</h2><div className="mt-4 grid gap-3 sm:grid-cols-2"><Link href="/uso" className="rounded-xl border border-border bg-surface p-4 hover:border-primary"><p className="font-medium text-text">Uso y costo</p><p className="mt-1 text-sm text-text-muted">Cómo se estima el consumo.</p></Link><Link href="/cobros" className="rounded-xl border border-border bg-surface p-4 hover:border-primary"><p className="font-medium text-text">Cobros</p><p className="mt-1 text-sm text-text-muted">Qué está simulado y qué falta conectar.</p></Link><Link href="/instancias" className="rounded-xl border border-border bg-surface p-4 hover:border-primary"><p className="font-medium text-text">Instancias</p><p className="mt-1 text-sm text-text-muted">Cobertura, margen y suspensión.</p></Link><Link href="/reclamos" className="rounded-xl border border-border bg-surface p-4 hover:border-primary"><p className="font-medium text-text">Soporte</p><p className="mt-1 text-sm text-text-muted">Cómo responder a tus clientes.</p></Link></div></section>
-    </div>
-  </AppShell>;
+
+  return <AppShell rol="operador" activeId="docs" nombrePerfil={usuario.nombre ?? usuario.email}><DocsContent /></AppShell>;
 }
