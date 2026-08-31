@@ -70,6 +70,7 @@ No subas archivos `.env`, claves de API, tokens de Supabase, certificados DTE ni
 - [Guía de despliegue e infraestructura](docs/16-despliegue-e-infra.md)
 - [Auto-despliegue y costos](docs/eng/10-auto-despliegue-y-costos.md)
 - [Reporte GO/NO-GO](docs/eng/13-reporte-go-no-go-2026-08-30.md)
+- [Guía de flujo completo con ejemplos](docs/guia-flujo-completo.md)
 
 ## Nombre
 
